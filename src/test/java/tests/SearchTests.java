@@ -38,7 +38,7 @@ public class SearchTests extends TestBase {
         step("Verify content found", () ->
                 $(id("org.wikipedia.alpha:id/view_news_fullscreen_story_text"))
                         .shouldHave(text(
-                                "Former President of the United States Donald Trump (pictured) is arraigned on 34 changes of falsifying business records.")));
+                                "Former President of the United States Donald Trump (pictured) is arraigned on 34 charges of falsifying business records.")));
     }
 
     @DisplayName("Successful search on iPhone")
