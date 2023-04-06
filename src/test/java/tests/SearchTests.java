@@ -38,7 +38,7 @@ public class SearchTests extends TestBase {
         step("Verify content found", () ->
                 $(id("org.wikipedia.alpha:id/view_news_fullscreen_story_text"))
                         .shouldHave(text(
-                                "At the Academy Awards, Everything Everywhere All at Once wins seven awards, including Best Picture and Best Actress for Michelle Yeoh (pictured).")));
+                                "Former President of the United States Donald Trump (pictured) is arraigned on 34 changes of falsifying business records.")));
     }
 
     @DisplayName("Successful search on iPhone")
