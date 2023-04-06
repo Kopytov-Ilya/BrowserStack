@@ -71,11 +71,11 @@ tasks.withType(Test) {
 
 task android(type: Test) {
     useJUnitPlatform {
-        includeTags("Android")
+        includeTags("android")
     }
 }
 task ios(type: Test) {
     useJUnitPlatform {
-        includeTags("IOS")
+        includeTags("Iphone")
     }
 }
