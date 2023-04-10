@@ -1,49 +1,42 @@
 package drivers;
 
 import com.codeborne.selenide.WebDriverProvider;
-import config.MobileDriverConfig;
-import java.net.MalformedURLException;
-import java.net.URL;
+import config.BrowserstackConfig;
 import org.aeonbits.owner.ConfigFactory;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import javax.annotation.Nonnull;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 public class BrowserstackMobileDriver implements WebDriverProvider {
 
-    @Override
-    public WebDriver createDriver(Capabilities capabilities) {
-        MobileDriverConfig config =
-                ConfigFactory.create(MobileDriverConfig.class, System.getProperties());
-        String user = config.getUser();
-        String password = config.getPassword();
-        String app = config.getApp();
-        String remoteUrl = config.getRemoteURL();
-        String device = config.getDevice();
-        String version = config.getOsVersion();
-        String nameProject = config.getProject();
-        String build = config.getBuild();
-        String nameTest = config.getName();
 
-        MutableCapabilities mutableCapabilities = new MutableCapabilities();
-        mutableCapabilities.merge(capabilities);
+        public static BrowserstackConfig config = ConfigFactory.create(BrowserstackConfig.class, System.getProperties());
+        @Nonnull
+        @Override
+        public WebDriver createDriver(@Nonnull Capabilities capabilities) {
+            MutableCapabilities mutableCapabilities = new MutableCapabilities();
+            mutableCapabilities.merge(capabilities);
+            mutableCapabilities.setCapability("browserstack.user", config.user());
+            mutableCapabilities.setCapability("browserstack.key", config.key());
+            mutableCapabilities.setCapability("app", config.app());
+            mutableCapabilities.setCapability("device", config.device());
+            mutableCapabilities.setCapability("os_version", config.version());
+            mutableCapabilities.setCapability("project", config.project());
+            mutableCapabilities.setCapability("build", config.build());
+            mutableCapabilities.setCapability("name", config.name());
 
-        mutableCapabilities.setCapability("browserstack.user", user);
-        mutableCapabilities.setCapability("browserstack.key", password);
-        mutableCapabilities.setCapability("app", app);
-        mutableCapabilities.setCapability("device", device);
-        mutableCapabilities.setCapability("os_version", version);
-        mutableCapabilities.setCapability("project", nameProject);
-        mutableCapabilities.setCapability("build", build);
-        mutableCapabilities.setCapability("name", nameTest);
-
-
-        try {
-            return new RemoteWebDriver(
-                    new URL(remoteUrl), mutableCapabilities);
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
+            return new RemoteWebDriver(getBrowserstackUrl(), mutableCapabilities);
+        }
+        public static URL getBrowserstackUrl() {
+            try {
+                return new URL(config.getBaseUrl());
+            } catch (MalformedURLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
-}

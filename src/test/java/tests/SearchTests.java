@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Test;
 
 public class SearchTests extends TestBase {
 
-    @DisplayName("Search on Android")
     @Tag("Android")
     @Test
     void successfulSearchAndroidTest() {
@@ -28,7 +27,6 @@ public class SearchTests extends TestBase {
                         .shouldHave(sizeGreaterThan(0)));
     }
 
-    @DisplayName("Check information on the link click")
     @Tag("Android")
     @Test
     void openTheLinkTest() {
@@ -41,7 +39,6 @@ public class SearchTests extends TestBase {
                                 "Former President of the United States Donald Trump (pictured) is arraigned on 34 charges of falsifying business records.")));
     }
 
-    @DisplayName("Search IOS")
     @Tag("IOS")
     @Test
     void checkInputIOS() {
