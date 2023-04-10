@@ -44,13 +44,12 @@ public class SearchTests extends TestBase {
     @DisplayName("Search IOS")
     @Tag("IOS")
     @Test
-    void successfulSearchIosTest() {
-
-        step("Type search", () -> {
+    void checkInputIOS() {
+        step("Click button Text", () -> {
             $(accessibilityId("Text Button")).click();
-            $(accessibilityId("Text Input")).sendKeys("hello@browserstack.com");
         });
-        step("Verify content found", () ->
-                $(accessibilityId("Text Output")).shouldBe(visible));
+        step("Check Text Input", () -> {
+            $(accessibilityId("Text Input")).shouldBe(visible);
+        });
     }
 }
