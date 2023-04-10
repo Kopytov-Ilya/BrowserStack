@@ -1,7 +1,6 @@
 package helpers;
 
 import io.qameta.allure.Attachment;
-import io.qameta.allure.aspects.AttachmentsAspects;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 
