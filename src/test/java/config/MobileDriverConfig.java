@@ -1,55 +1,33 @@
 package config;
+
 import org.aeonbits.owner.Config;
 
-@Config.Sources({"classpath:${env}.properties"
-})
+@Config.Sources({"classpath:${env}.properties"})
 public interface MobileDriverConfig extends Config {
+    @Key("login")
+    String login();
 
-    @Key("browserstack.user")
-    String getUser();
+    @Key("password")
+    String password();
 
-    @Key("browserstack.key")
-    String getKey();
-
-    @Key("apps")
-    String getApp();
-
-    @Key("device")
-    String getDevice();
-
-    @Key("baseurl")
-    String getBaseUrl();
-
-    @Key("version")
-    String getVersion();
-
-    @Key("project")
-    String getProject();
-
-    @Key("build")
-    String getBuild();
-
-    @Key("name")
-    String getName();
-
-    @Key("platformVersion")
-    String getPlatformVersion();
-
-    @Key("deviceName")
-    String getDeviceName();
+    @Key("baseURL")
+    String baseUrl();
 
     @Key("appURL")
-    String getAppURL();
+    String appUrl();
 
-    @Key("appPath")
-    String getAppPath();
+    @Key("device")
+    String device();
 
-    @Key("appPackage")
-    String getAppPackage();
+    @Key("os_version")
+    String osVersion();
 
-    @Key("appActivity")
-    String getAppActivity();
+    @Key("project")
+    String projectName();
 
-    @Key("appiumUrl")
-    String getAppiumUrl();
+    @Key("build")
+    String buildName();
+
+    @Key("name")
+    String testName();
 }

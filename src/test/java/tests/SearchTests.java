@@ -1,23 +1,22 @@
 package tests;
 
-import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$$;
-import static io.appium.java_client.AppiumBy.accessibilityId;
-import static io.qameta.allure.Allure.step;
-import static org.openqa.selenium.By.id;
-
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
+import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
+import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$$;
+import static io.appium.java_client.AppiumBy.accessibilityId;
+import static io.appium.java_client.AppiumBy.id;
+import static io.qameta.allure.Allure.step;
+
+
 public class SearchTests extends TestBase {
 
-    @Tag("Android")
     @Test
-    void successfulSearchAndroidTest() {
+    @Tag("android")
+    void successfulSearchTest() {
         step("Type search", () -> {
             $(accessibilityId("Search Wikipedia")).click();
             $(id("org.wikipedia.alpha:id/search_src_text")).sendKeys("java");
@@ -27,26 +26,34 @@ public class SearchTests extends TestBase {
                         .shouldHave(sizeGreaterThan(0)));
     }
 
-    @Tag("Android")
     @Test
-    void openTheLinkTest() {
-        step("click on the link on the main page", () -> {
-            $(id("org.wikipedia.alpha:id/horizontal_scroll_list_item_text")).click();
+    @Tag("android")
+    void openPageTest() {
+        step("Type search", () -> {
+            $(accessibilityId("Search Wikipedia")).click();
+            $(id("org.wikipedia.alpha:id/search_src_text")).sendKeys("java");
         });
         step("Verify content found", () ->
-                $(id("org.wikipedia.alpha:id/view_news_fullscreen_story_text"))
-                        .shouldHave(text(
-                                "Former President of the United States Donald Trump (pictured) is arraigned on 34 charges of falsifying business records.")));
+                $$(id("org.wikipedia.alpha:id/page_list_item_title"))
+                        .shouldHave(sizeGreaterThan(0)));
+        step("Open page", () ->
+                $(id("org.wikipedia.alpha:id/page_list_item_description")).click());
+        step("Verify error after opening the page", () -> {
+            $(id("org.wikipedia.alpha:id/view_wiki_error_text")).shouldHave(text("Error"));
+            $(id("org.wikipedia.alpha:id/view_wiki_error_button")).click();
+        });
     }
 
-    @Tag("IOS")
+    @Tag("ios")
     @Test
-    void checkInputIOS() {
-        step("Click button Text", () -> {
-            $(accessibilityId("Text Button")).click();
+    public void searchIosTest() {
+        step("iOS type search", () -> {
+            $(id("Text Button")).click();
+            $(id("Text Input")).sendKeys("hello@browserstack.com");
+            $(id("Text Input")).pressEnter();
         });
-        step("Check Text Input", () -> {
-            $(accessibilityId("Text Input")).shouldBe(visible);
+        step("Verify content found", () -> {
+            $(id("Text Output")).shouldHave((text("hello@browserstack.com")));
         });
     }
 }
