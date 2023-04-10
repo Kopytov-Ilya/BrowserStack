@@ -1,10 +1,15 @@
 package helpers;
 
+import config.MobileDriverConfig;
+import org.aeonbits.owner.ConfigFactory;
+
 import static helpers.CustomAllureListener.withCustomTemplates;
 import static io.restassured.RestAssured.given;
 import static java.lang.String.format;
 
 public class Browserstack {
+
+    public static MobileDriverConfig config = ConfigFactory.create(MobileDriverConfig.class);
 
     public static String getVideoUrl(String sessionId) {
         String url = format("https://api.browserstack.com/app-automate/sessions/%s.json", sessionId);
@@ -12,7 +17,7 @@ public class Browserstack {
         return given()
                 .log().all()
                 .filter(withCustomTemplates())
-                .auth().basic("julchik_6wNHJu", "xAgjp8yezruyDGA1Ry4s")
+                .auth().basic(config.getUser(), config.getKey())
                 .when()
                 .get(url)
                 .then()

@@ -1,20 +1,6 @@
 plugins {
     id 'java-library'
-    id "io.qameta.allure" version "2.10.0"
-}
-
-allure {
-    report {
-        version.set("2.19.0")
-    }
-    adapter {
-        aspectjWeaver.set(true)
-        frameworks {
-            junit5 {
-                adapterVersion.set("2.19.0")
-            }
-        }
-    }
+    id "io.qameta.allure" version "2.11.2"
 }
 
 group 'org.QAGURU'
@@ -24,21 +10,40 @@ repositories {
     mavenCentral()
 }
 
-compileTestJava {
-    options.encoding = 'UTF-8'
-}
-
 dependencies {
     testImplementation (
-            'org.junit.jupiter:junit-jupiter:5.8.1',
-            'com.codeborne:selenide:6.11.2',
-            'org.slf4j:slf4j-simple:2.0.6',
-            'io.qameta.allure:allure-selenide:2.19.0',
-            'org.aeonbits.owner:owner:1.0.12',
+            "com.codeborne:selenide:6.11.2",
+            'io.qameta.allure:allure-selenide:2.20.1',
+            "io.rest-assured:rest-assured:5.3.0",
+            "org.aeonbits.owner:owner:1.0.4",
+            "io.qameta.allure:allure-rest-assured:2.20.1",
             "io.appium:java-client:8.3.0",
-            "io.qameta.allure:allure-rest-assured:2.19.0",
-            "io.rest-assured:rest-assured:5.3.0"
+            "org.junit.jupiter:junit-jupiter:5.9.2",
+            'org.junit.jupiter:junit-jupiter-api:5.9.2',
+            'org.junit.jupiter:junit-jupiter-params:5.9.2',
+            'io.github.bonigarcia:webdrivermanager:5.2.1'
     )
+
+    allure {
+        version.set("2.20.1")
+        adapter {
+            allureJavaVersion.set("2.20.1")
+            aspectjVersion.set("1.9.5")
+            aspectjWeaver.set(true)
+
+            frameworks {
+                junit5 {
+                    // Defaults to allureJavaVersion
+                    adapterVersion.set("2.20.1")
+                    enabled.set(true)
+                }
+            }
+        }
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
 }
 
 tasks.withType(Test) {
@@ -53,15 +58,20 @@ tasks.withType(Test) {
     }
 }
 
-task android_test(type: Test) {
+task android(type: Test) {
     useJUnitPlatform {
-        includeTags("Android")
+        includeTags 'android'
     }
 }
 
-task iphone_test(type: Test) {
+task ios(type: Test) {
     useJUnitPlatform {
-        includeTags("IOS")
+        includeTags 'ios'
     }
 }
 
+task emulator(type: Test) {
+    useJUnitPlatform {
+        includeTags 'emulator'
+    }
+}
