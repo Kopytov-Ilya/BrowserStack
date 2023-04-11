@@ -60,7 +60,7 @@ public class LocalMobileDriver implements WebDriverProvider {
             try (InputStream in = new URL(emulatorConfig.appURL()).openStream()) {
                 copyInputStreamToFile(in, app);
             } catch (IOException e) {
-                throw new AssertionError("Failed to download application", e);
+                throw new AssertionError("Failed to upload application", e);
             }
         }
         return app.getAbsolutePath();
