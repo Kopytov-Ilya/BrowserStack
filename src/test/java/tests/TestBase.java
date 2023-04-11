@@ -1,25 +1,31 @@
 package tests;
 
 import com.codeborne.selenide.Configuration;
-import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import drivers.BrowserstackMobileDriver;
+import drivers.LocalMobileDriver;
 import helpers.Attach;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 
-import static com.codeborne.selenide.Selenide.closeWebDriver;
-import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selenide.*;
 
 public class TestBase {
+    public static String deviceHost = System.getProperty("env");
 
     @BeforeAll
     static void beforeAll() {
-        Configuration.browser = BrowserstackMobileDriver.class.getName();
         Configuration.browserSize = null;
+
+        if (deviceHost.equals("android") || deviceHost.equals("ios")) {
+            Configuration.browser = BrowserstackMobileDriver.class.getName();
+        } else {
+            Configuration.browser = LocalMobileDriver.class.getName();
+        }
     }
+
 
     @BeforeEach
     void addListener() {
@@ -29,13 +35,10 @@ public class TestBase {
 
     @AfterEach
     void afterEach() {
-        String sessionId = Selenide.sessionId().toString();
-
-//        Attach.screenshotAs("Last screenshot");
         Attach.pageSource();
-
+        if (deviceHost.equals("android") || deviceHost.equals("ios")) {
+            Attach.addVideo(sessionId().toString());
+        }
         closeWebDriver();
-
-        Attach.addVideo(sessionId);
     }
 }
